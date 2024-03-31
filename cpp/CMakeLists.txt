@@ -61,3 +61,5 @@ find_package(doctest REQUIRED)
 add_executable(lrm_test test.cpp)
 target_link_libraries(lrm_test PRIVATE doctest::doctest)
 add_test(NAME lrm_test COMMAND lrm_test)
+
+add_executable(lrm lrm.cpp)

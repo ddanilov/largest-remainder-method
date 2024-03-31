@@ -33,3 +33,10 @@ To generate code coverage report, `CMakeLists.txt` defines a custom build target
     cmake --build <path-to-build> --target coverage
 
 The coverage report will be saved to `<path-to-build>/gcovr` or `<path-to-build>/llvm-cov` directory.
+
+## Run
+
+Program `lrm` reads the input data from a file and prints the distribution
+results
+
+    <path-to-build>/lrm <path-to-file>
