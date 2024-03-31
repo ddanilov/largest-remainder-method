@@ -34,6 +34,26 @@ if(WITH_COVERAGE)
             --object-directory ${PROJECT_BINARY_DIR}
             WORKING_DIRECTORY ${PROJECT_BINARY_DIR})
     endif()
+
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+      find_program(LLVM_PROFDATA llvm-profdata REQUIRED)
+      find_program(LLVM_COV llvm-cov REQUIRED)
+      add_compile_options(-fprofile-instr-generate -fcoverage-mapping)
+      add_link_options(-fprofile-instr-generate -fcoverage-mapping)
+      set(COVERAGE_DIR "llvm-cov")
+      message(STATUS "coverage report: ${PROJECT_BINARY_DIR}/${COVERAGE_DIR}")
+      file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/${COVERAGE_DIR})
+      add_custom_target(coverage
+        COMMAND ${CMAKE_COMMAND} -E env "LLVM_PROFILE_FILE=lrm_test.profraw" $<TARGET_FILE:lrm_test>
+        COMMAND ${LLVM_PROFDATA} merge -o lrm_test.profdata lrm_test.profraw
+        COMMAND ${LLVM_COV} show
+        -instr-profile=lrm_test.profdata
+        --ignore-filename-regex=".*test.cpp"
+        --format html
+        -output-dir=${COVERAGE_DIR}
+        lrm_test
+        WORKING_DIRECTORY ${PROJECT_BINARY_DIR})
+    endif()
 endif()
 
 enable_testing(TRUE)

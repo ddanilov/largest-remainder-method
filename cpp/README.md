@@ -6,6 +6,7 @@
 * `CMake` build system, <https://cmake.org/>
 * `doctest` for unit tests, <https://github.com/doctest/doctest>
 * `gcovr` for code coverage report with `GCC`, <https://gcovr.com>
+* `llvm-cov` for code coverage report with `Clang`, <https://llvm.org/docs/CommandGuide/llvm-cov.html>
 
 ## Build
 
@@ -31,4 +32,4 @@ To generate code coverage report, `CMakeLists.txt` defines a custom build target
 
     cmake --build <path-to-build> --target coverage
 
-The coverage report will be saved to `<path-to-build>/gcovr` directory.
+The coverage report will be saved to `<path-to-build>/gcovr` or `<path-to-build>/llvm-cov` directory.
