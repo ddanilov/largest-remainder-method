@@ -5,18 +5,19 @@
 * `C++` compiler with `C++23` support, e.g. `GCC 14` or `Clang 18`
 * `CMake` build system, <https://cmake.org/>
 * `doctest` for unit tests, <https://github.com/doctest/doctest>
+* `gcovr` for code coverage report with `GCC`, <https://gcovr.com>
 
 ## Build
 
 First run `cmake` to configure a build directory `<path-to-build>`
 
-    cmake -DCMAKE_BUILD_TYPE=Debug -S <path-to-source> -B <path-to-build>
+    cmake -DCMAKE_BUILD_TYPE=Debug -DWITH_COVERAGE=ON -S <path-to-source> -B <path-to-build>
 
 and then build the project
 
     cmake --build <path-to-build>
 
-## Tests
+## Tests and code coverage
 
 Unit tests can be executed through `ctest`
 
@@ -25,3 +26,9 @@ Unit tests can be executed through `ctest`
 or directly
 
     <path-to-build>/lrm_test
+
+To generate code coverage report, `CMakeLists.txt` defines a custom build target `coverage`
+
+    cmake --build <path-to-build> --target coverage
+
+The coverage report will be saved to `<path-to-build>/gcovr` directory.
