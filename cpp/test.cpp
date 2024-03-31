@@ -112,6 +112,10 @@ TEST_CASE("distributing votes")
       CHECK(quotas.at(0) == std::tuple(std::string("A"), 50, 1));
       CHECK(quotas.at(1) == std::tuple(std::string("B"), 100, 2));
       CHECK(quotas.at(2) == std::tuple(std::string("C"), 150, 3));
+      auto result = distribute_rest(rest, quotas);
+      CHECK(result.at(0) == std::tuple(std::string("C"), 150 + 1, 3));
+      CHECK(result.at(1) == std::tuple(std::string("B"), 100, 2));
+      CHECK(result.at(2) == std::tuple(std::string("A"), 50, 1));
     }
 
     SUBCASE("302")
@@ -124,9 +128,13 @@ TEST_CASE("distributing votes")
       CHECK(quotas.at(0) == std::tuple(std::string("A"), 50, 2));
       CHECK(quotas.at(1) == std::tuple(std::string("B"), 100, 4));
       CHECK(quotas.at(2) == std::tuple(std::string("C"), 151, 0));
+      auto result = distribute_rest(rest, quotas);
+      CHECK(result.at(0) == std::tuple(std::string("B"), 100 + 1, 4));
+      CHECK(result.at(1) == std::tuple(std::string("A"), 50, 2));
+      CHECK(result.at(2) == std::tuple(std::string("C"), 151, 0));
     }
 
-    SUBCASE("303")
+    SUBCASE("303a")
     {
       V votes = {{"A", 1},
                  {"B", 2},
@@ -136,6 +144,25 @@ TEST_CASE("distributing votes")
       CHECK(quotas.at(0) == std::tuple(std::string("A"), 50, 3));
       CHECK(quotas.at(1) == std::tuple(std::string("B"), 101, 0));
       CHECK(quotas.at(2) == std::tuple(std::string("C"), 151, 3));
+      auto result = distribute_rest(rest, quotas);
+      CHECK(result.at(0) == std::tuple(std::string("A"), 50 + 1, 3));
+      CHECK(result.at(1) == std::tuple(std::string("C"), 151, 3));
+      CHECK(result.at(2) == std::tuple(std::string("B"), 101, 0));
+    }
+
+    SUBCASE("303c")
+    {
+      V votes = {{"C", 3},
+                 {"A", 1},
+                 {"B", 2}};
+      auto [rest, quotas] = distribute_quota(300 + 3, votes);
+      CHECK(quotas.at(0) == std::tuple(std::string("C"), 151, 3));
+      CHECK(quotas.at(1) == std::tuple(std::string("A"), 50, 3));
+      CHECK(quotas.at(2) == std::tuple(std::string("B"), 101, 0));
+      auto result = distribute_rest(rest, quotas);
+      CHECK(result.at(0) == std::tuple(std::string("C"), 151 + 1, 3));
+      CHECK(result.at(1) == std::tuple(std::string("A"), 50, 3));
+      CHECK(result.at(2) == std::tuple(std::string("B"), 101, 0));
     }
   }
 }

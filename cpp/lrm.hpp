@@ -36,3 +36,17 @@ auto distribute_quota(const int seats, const auto& votes)
   }
   return std::make_pair(rest, result);
 }
+
+template <size_t index>
+void reverse_sort_by(auto& seq)
+{
+  std::ranges::sort(seq, [](const auto& x, const auto& y) { return std::get<index>(x) > std::get<index>(y); });
+}
+
+auto distribute_rest(const int rest, const auto& quotas)
+{
+  auto result = quotas;
+  reverse_sort_by<2>(result);
+  std::ranges::for_each(result | std::ranges::views::take(rest), [](auto& x) { ++std::get<1>(x); });
+  return result;
+}
