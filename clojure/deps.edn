@@ -1,0 +1,7 @@
+{:paths ["src"]
+ :aliases {:run/main {:main-opts ["-m" "lrm.hare"]}
+           :test/kaocha {:extra-paths ["test" "resources"]
+                         :extra-deps {lambdaisland/kaocha {:mvn/version "1.88.1376"}
+                                      lambdaisland/kaocha-cloverage {:mvn/version "1.1.89"}}
+                         :exec-fn kaocha.runner/exec-fn
+                         :exec-args {}}}}
