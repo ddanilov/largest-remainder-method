@@ -13,3 +13,12 @@
         seats (data "seats")
         votes (dissoc data "seats")]
     [seats votes]))
+
+(defn distribute-quota [[seats votes]]
+  (let [total (reduce + (vals votes))
+        q #(quot (* (val %) seats) total)
+        r #(rem (* (val %) seats) total)
+        qs (mapv (juxt key q r) votes)
+        sum (reduce + (map second qs))
+        res (- seats sum)]
+    [res qs]))
