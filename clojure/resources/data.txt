@@ -1,0 +1,3 @@
+seats 123
+party_A 10
+party_B 11
