@@ -37,3 +37,12 @@
     (testing "with rest"
       (is (= (T/distribute-quota [301 {"A" 1, "B" 2, "C" 3}])
              [1 [["A" 50 1] ["B" 100 2] ["C" 150 3]]])))))
+
+(deftest rest-distribution
+  (testing "rest distribution"
+    (is (= (T/distribute-rest [1 [["A" 300 1] ["B" 200 2] ["C" 100 3]]])
+           [["C" 101 3] ["B" 200 2] ["A" 300 1]]))
+    (is (= (T/distribute-rest [2 [["A" 300 1] ["B" 200 2] ["C" 100 3]]])
+           [["C" 101 3] ["B" 201 2] ["A" 300 1]]))
+    (is (= (T/distribute-rest [3 [["A" 300 1] ["B" 200 2] ["C" 100 3]]])
+           [["C" 101 3] ["B" 201 2] ["A" 301 1]]))))

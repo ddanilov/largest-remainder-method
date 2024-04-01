@@ -22,3 +22,8 @@
         sum (reduce + (map second qs))
         res (- seats sum)]
     [res qs]))
+
+(defn distribute-rest [[res quotas]]
+  (loop [i 0, xs (vec (sort-by #(nth % 2) > quotas))]
+    (if (= i res) xs
+        (recur (inc i), (update-in xs [i 1] inc)))))
