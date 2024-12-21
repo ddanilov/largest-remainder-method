@@ -13,20 +13,20 @@ TEST_CASE("reading input data")
 
   SUBCASE("empty input")
   {
-    const auto data = read_data(input);
-    CHECK(data.first == 0);
-    CHECK(data.second.empty());
+    const auto [seats, data] = read_data(input);
+    CHECK(seats == 0);
+    CHECK(data.empty());
   }
 
   SUBCASE("single party")
   {
     input.str("party_A 10");
-    const auto data = read_data(input);
+    const auto [seats, data] = read_data(input);
 
-    CHECK(data.first == 0);
-    CHECK(data.second.size() == 1);
+    CHECK(seats == 0);
+    CHECK(data.size() == 1);
 
-    CHECK(data.second.at(0) == std::pair(std::string("party_A"), 10));
+    CHECK(data.at(0) == std::pair(std::string("party_A"), 10));
   }
 
   SUBCASE("two parties with seats")
@@ -34,19 +34,19 @@ TEST_CASE("reading input data")
     input.str("seats 123\n"
               "party_A 10\n"
               "party_B 11\n");
-    const auto data = read_data(input);
+    const auto [seats, data] = read_data(input);
 
-    CHECK(data.first == 123);
-    CHECK(data.second.size() == 2);
+    CHECK(seats == 123);
+    CHECK(data.size() == 2);
 
-    CHECK(data.second.at(0) == std::pair(std::string("party_A"), 10));
-    CHECK(data.second.at(1) == std::pair(std::string("party_B"), 11));
+    CHECK(data.at(0) == std::pair(std::string("party_A"), 10));
+    CHECK(data.at(1) == std::pair(std::string("party_B"), 11));
   }
 }
 
 TEST_CASE("distributing votes")
 {
-  typedef std::vector<std::pair<std::string, int>> V;
+  using V = std::vector<std::pair<std::string, int>>;
 
   SUBCASE("trivial cases")
   {

@@ -1,6 +1,8 @@
 // SPDX-FileCopyrightText: 2024 Denis Danilov
 // SPDX-License-Identifier: GPL-3.0-only
 
+#pragma once
+
 #include <algorithm>
 #include <istream>
 #include <ranges>
