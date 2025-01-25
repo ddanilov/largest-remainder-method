@@ -1,0 +1,19 @@
+name: Clojure
+
+on: [push, pull_request]
+
+defaults:
+  run:
+    shell: bash
+    working-directory: clojure
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: clojure:tools-deps
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: test
+        run: clojure -X:test/kaocha
