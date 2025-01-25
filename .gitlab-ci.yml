@@ -3,3 +3,29 @@ test:clojure:
   script:
     - cd clojure
     - clojure -X:test/kaocha
+
+test:cpp:gcc:
+  image: debian:testing
+  script:
+    - apt-get -qq update
+    - apt-get install --assume-yes g++
+    - apt-get install --assume-yes cmake
+    - apt-get install --assume-yes doctest-dev
+    - cd cpp
+    - mkdir build
+    - cmake -DWITH_COVERAGE=OFF -B build
+    - cmake --build build
+    - ctest --test-dir build
+
+test:cpp:clang:
+  image: debian:testing
+  script:
+    - apt-get -qq update
+    - apt-get install --assume-yes clang
+    - apt-get install --assume-yes cmake
+    - apt-get install --assume-yes doctest-dev
+    - cd cpp
+    - mkdir build
+    - cmake -DWITH_COVERAGE=OFF -B build
+    - cmake --build build
+    - ctest --test-dir build
