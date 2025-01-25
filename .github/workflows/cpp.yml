@@ -1,0 +1,32 @@
+name: C++
+
+on: [push, pull_request]
+
+defaults:
+  run:
+    shell: bash
+    working-directory: cpp
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: debian:testing
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: dependencies
+        run: |
+          apt-get -qq update
+          apt-get install --assume-yes g++
+          apt-get install --assume-yes cmake
+          apt-get install --assume-yes doctest-dev
+
+      - name: configure
+        run: cmake -DWITH_COVERAGE=OFF -B ${{github.workspace}}/build
+
+      - name: build
+        run: cmake --build ${{github.workspace}}/build
+
+      - name: test
+        run: ctest --test-dir ${{github.workspace}}/build
