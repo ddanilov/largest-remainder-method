@@ -1,7 +1,7 @@
-# SPDX-FileCopyrightText: 2024 Denis Danilov
+# SPDX-FileCopyrightText: 2024-2025 Denis Danilov
 # SPDX-License-Identifier: GPL-3.0-only
 
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.28)
 
 project(largest-remainder LANGUAGES CXX)
 
@@ -56,8 +56,17 @@ if(WITH_COVERAGE)
     endif()
 endif()
 
+include(FetchContent)
+FetchContent_Declare(
+    doctest
+    GIT_REPOSITORY https://github.com/doctest/doctest.git
+    GIT_TAG        v2.4.11
+    EXCLUDE_FROM_ALL
+    FIND_PACKAGE_ARGS
+)
+FetchContent_MakeAvailable(doctest)
+
 enable_testing(TRUE)
-find_package(doctest REQUIRED)
 add_executable(lrm_test test.cpp)
 target_link_libraries(lrm_test PRIVATE doctest::doctest)
 add_test(NAME lrm_test COMMAND lrm_test)

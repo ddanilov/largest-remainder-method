@@ -4,7 +4,7 @@
 
 * `C++` compiler with `C++23` support, e.g. `GCC 14` or `Clang 18`
 * `CMake` build system, <https://cmake.org/>
-* `doctest` for unit tests, <https://github.com/doctest/doctest>
+* `doctest` for unit tests (if `doctest` is not installed then `CMake` will download and integrate it automatically), <https://github.com/doctest/doctest>
 * `gcovr` for code coverage report with `GCC`, <https://gcovr.com>
 * `llvm-cov` for code coverage report with `Clang`, <https://llvm.org/docs/CommandGuide/llvm-cov.html>
 
