@@ -1,0 +1,5 @@
+test:clojure:
+  image: clojure:tools-deps
+  script:
+    - cd clojure
+    - clojure -X:test/kaocha
