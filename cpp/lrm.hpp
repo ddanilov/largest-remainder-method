@@ -4,6 +4,7 @@
 #pragma once
 
 #include <algorithm>
+#include <charconv>
 #include <istream>
 #include <ranges>
 #include <vector>
@@ -18,7 +19,8 @@ auto read_data(std::istream& input)
     auto key_value = std::views::split(line, ' ');
     auto key = std::string_view(key_value.front());
     auto value = std::string_view((key_value | std::views::drop(1)).front());
-    auto number = std::stoi(value.data());
+    int number = 0;
+    std::from_chars(value.data(), value.data() + value.size(), number);
     if (key == "seats") { seats = number; }
     else { data.emplace_back(key, number); }
   }
