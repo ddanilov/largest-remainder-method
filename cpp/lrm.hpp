@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 Denis Danilov
+// SPDX-FileCopyrightText: 2024-2025 Denis Danilov
 // SPDX-License-Identifier: GPL-3.0-only
 
 #pragma once
@@ -16,10 +16,11 @@ auto read_data(std::istream& input)
   while (std::getline(input, line))
   {
     auto key_value = std::views::split(line, ' ');
-    auto key = std::string_view(*key_value.cbegin());
-    auto value = std::stoi((*std::next(key_value.cbegin())).data());
-    if (key == "seats") { seats = value; }
-    else { data.emplace_back(key, value); }
+    auto key = std::string_view(key_value.front());
+    auto value = std::string_view((key_value | std::views::drop(1)).front());
+    auto number = std::stoi(value.data());
+    if (key == "seats") { seats = number; }
+    else { data.emplace_back(key, number); }
   }
   return std::make_pair(seats, data);
 }
