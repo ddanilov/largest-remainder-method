@@ -1,4 +1,4 @@
-name: Clojure
+name: Fortran
 
 on: [push, pull_request]
 
