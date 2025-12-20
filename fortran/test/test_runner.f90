@@ -6,6 +6,7 @@ program test_runner
    use testdrive, only: run_testsuite, new_testsuite, testsuite_type
 
    use test_read_data, only: collect_read_data
+   use test_distribute_quota, only: collect_distribute_quota
 
    implicit none
 
@@ -15,7 +16,8 @@ program test_runner
    stat = 0
 
    testsuites = [ &
-                new_testsuite("read data", collect_read_data) &
+                new_testsuite("read data", collect_read_data), &
+                new_testsuite("quota distribution", collect_distribute_quota) &
                 ]
 
    do is = 1, size(testsuites)

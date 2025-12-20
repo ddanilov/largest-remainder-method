@@ -7,13 +7,14 @@ module lrm
    private
 
    public :: votes_type
-   public :: read_data
+   public :: read_data, distribute_quota
 
    integer, parameter :: key_length = 200
 
    type :: votes_type
       character(len=key_length) :: name = ''
       integer :: votes = 0
+      integer :: quota = 0
    end type votes_type
 
 contains
@@ -60,6 +61,24 @@ contains
       end if
 
    end subroutine read_data
+
+   subroutine distribute_quota(data, seats, rest)
+      type(votes_type), dimension(:), allocatable, intent(inout) :: data
+      integer, intent(in) :: seats
+      integer, intent(out) :: rest
+
+      integer :: total_votes
+      integer :: total_quota
+
+      total_votes = sum(data%votes)
+      if (total_votes /= 0) then
+         data%quota = (data%votes*seats)/total_votes
+      end if
+
+      total_quota = sum(data%quota)
+      rest = seats - total_quota
+
+   end subroutine distribute_quota
 
    integer function expand_allocatable(data) result(new_size)
       type(votes_type), dimension(:), allocatable, intent(inout) :: data
