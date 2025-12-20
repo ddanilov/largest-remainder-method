@@ -28,9 +28,10 @@ contains
       integer :: io_stat
 
       type(votes_type), dimension(:), allocatable :: buffer
+      integer :: buffer_size
       integer :: i
 
-      allocate (buffer(10))
+      buffer_size = expand_allocatable(buffer)
 
       seats = 0
       i = 0
@@ -44,6 +45,10 @@ contains
          end if
 
          i = i + 1
+         if (i > buffer_size) then
+            buffer_size = expand_allocatable(buffer)
+         end if
+
          buffer(i)%name = trim(key)
          buffer(i)%votes = val
       end do
@@ -55,5 +60,29 @@ contains
       end if
 
    end subroutine read_data
+
+   integer function expand_allocatable(data) result(new_size)
+      type(votes_type), dimension(:), allocatable, intent(inout) :: data
+
+      type(votes_type), dimension(:), allocatable :: tmp
+      integer :: old_size
+      integer, parameter :: initial_size = 16
+
+      if (.not. allocated(data)) then
+         old_size = 0
+      else
+         old_size = size(data)
+      end if
+
+      new_size = max(2*old_size, initial_size)
+      allocate (tmp(new_size))
+
+      if (old_size > 0) then
+         tmp(1:old_size) = data
+      end if
+
+      call move_alloc(from=tmp, to=data)
+
+   end function expand_allocatable
 
 end module lrm
