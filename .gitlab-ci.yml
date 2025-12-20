@@ -36,5 +36,6 @@ test:fortran:
     - apt-get -qq update
     - apt-get install --assume-yes gfortran
     - apt-get install --assume-yes fortran-fpm
+    - apt-get install --assume-yes git
     - cd fortran
     - fpm test
