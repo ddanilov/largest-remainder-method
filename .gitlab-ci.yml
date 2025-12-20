@@ -29,3 +29,12 @@ test:cpp:clang:
     - cmake -DWITH_COVERAGE=OFF -B build
     - cmake --build build
     - ctest --test-dir build
+
+test:fortran:
+  image: debian:testing
+  script:
+    - apt-get -qq update
+    - apt-get install --assume-yes gfortran
+    - apt-get install --assume-yes fortran-fpm
+    - cd fortran
+    - fpm test

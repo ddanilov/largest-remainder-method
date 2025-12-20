@@ -1,0 +1,25 @@
+name: Clojure
+
+on: [push, pull_request]
+
+defaults:
+  run:
+    shell: bash
+    working-directory: fortran
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: debian:testing
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: dependencies
+        run: |
+          apt-get -qq update
+          apt-get install --assume-yes gfortran
+          apt-get install --assume-yes fortran-fpm
+
+      - name: test
+        run: fpm test
