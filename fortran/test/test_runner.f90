@@ -7,6 +7,7 @@ program test_runner
 
    use test_read_data, only: collect_read_data
    use test_distribute_quota, only: collect_distribute_quota
+   use test_distribute_rest, only: collect_distribute_rest
 
    implicit none
 
@@ -17,7 +18,8 @@ program test_runner
 
    testsuites = [ &
                 new_testsuite("read data", collect_read_data), &
-                new_testsuite("quota distribution", collect_distribute_quota) &
+                new_testsuite("quota distribution", collect_distribute_quota), &
+                new_testsuite("rest distribution", collect_distribute_rest) &
                 ]
 
    do is = 1, size(testsuites)

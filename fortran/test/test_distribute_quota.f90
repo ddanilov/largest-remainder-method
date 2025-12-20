@@ -86,8 +86,13 @@ contains
       call check(error, rest, 0)
 
       call check(error, data(1)%quota, 100)
+      call check(error, data(1)%remainder, 0)
+
       call check(error, data(2)%quota, 100)
+      call check(error, data(2)%remainder, 0)
+
       call check(error, data(3)%quota, 100)
+      call check(error, data(3)%remainder, 0)
 
       data(1)%name = 'A'
       data(1)%votes = 1
@@ -103,8 +108,13 @@ contains
       call check(error, rest, 0)
 
       call check(error, data(1)%quota, 50)
+      call check(error, data(1)%remainder, 0)
+
       call check(error, data(2)%quota, 100)
+      call check(error, data(2)%remainder, 0)
+
       call check(error, data(3)%quota, 150)
+      call check(error, data(3)%remainder, 0)
 
    end subroutine test_03
 
@@ -129,8 +139,13 @@ contains
       call check(error, rest, 1)
 
       call check(error, data(1)%quota, 50)
+      call check(error, data(1)%remainder, 1)
+
       call check(error, data(2)%quota, 100)
+      call check(error, data(2)%remainder, 2)
+
       call check(error, data(3)%quota, 150)
+      call check(error, data(3)%remainder, 3)
 
    end subroutine test_04
 

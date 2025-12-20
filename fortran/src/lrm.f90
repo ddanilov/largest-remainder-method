@@ -7,7 +7,7 @@ module lrm
    private
 
    public :: votes_type
-   public :: read_data, distribute_quota
+   public :: read_data, distribute_quota, distribute_rest
 
    integer, parameter :: key_length = 200
 
@@ -15,6 +15,7 @@ module lrm
       character(len=key_length) :: name = ''
       integer :: votes = 0
       integer :: quota = 0
+      integer :: remainder = 0
    end type votes_type
 
 contains
@@ -73,12 +74,30 @@ contains
       total_votes = sum(data%votes)
       if (total_votes /= 0) then
          data%quota = (data%votes*seats)/total_votes
+         data%remainder = mod(data%votes*seats, total_votes)
       end if
 
       total_quota = sum(data%quota)
       rest = seats - total_quota
 
    end subroutine distribute_quota
+
+   subroutine distribute_rest(data, rest)
+      type(votes_type), dimension(:), allocatable, intent(inout) :: data
+      integer, intent(in) :: rest
+
+      logical, dimension(:), allocatable :: index_mask
+      integer :: i, i_max
+
+      allocate (index_mask(size(data)), source=.true.)
+
+      do i = 1, rest
+         i_max = maxloc(data%remainder, dim=1, mask=index_mask)
+         index_mask(i_max) = .false.
+         data(i_max)%quota = data(i_max)%quota + 1
+      end do
+
+   end subroutine distribute_rest
 
    integer function expand_allocatable(data) result(new_size)
       type(votes_type), dimension(:), allocatable, intent(inout) :: data
