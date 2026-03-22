@@ -1,0 +1,19 @@
+name: Julia
+
+on: [push, pull_request]
+
+defaults:
+  run:
+    shell: bash
+    working-directory: julia
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: julia:latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: test
+        run: julia --project test/runtests.jl

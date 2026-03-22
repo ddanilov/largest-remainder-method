@@ -39,3 +39,9 @@ test:fortran:
     - apt-get install --assume-yes git
     - cd fortran
     - fpm test
+
+test:julia:
+  image: julia:latest
+  script:
+    - cd julia
+    - julia --project test/runtests.jl
