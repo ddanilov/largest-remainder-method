@@ -20,7 +20,7 @@ and then build the project
 
 ## Tests and code coverage
 
-Unit tests can be executed through `ctest`
+Unit tests can be executed by `ctest`
 
     ctest --test-dir <path-to-build>
 
@@ -34,9 +34,8 @@ To generate code coverage report, `CMakeLists.txt` defines a custom build target
 
 The coverage report will be saved to `<path-to-build>/gcovr` or `<path-to-build>/llvm-cov` directory.
 
-## Run
+## CLI application
 
-Program `lrm` reads the input data from a file and prints the distribution
-results
+To read input data from a file and print the distribution results run command
 
     <path-to-build>/lrm <path-to-file>

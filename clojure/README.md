@@ -13,7 +13,7 @@ Unit tests can be executed with command
 
 It will also generate code coverage report in `target/coverage` directory.
 
-## Run
+## CLI application
 
 To read input data from a file and print the distribution results run command
 
