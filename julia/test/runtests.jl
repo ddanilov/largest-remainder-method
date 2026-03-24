@@ -92,4 +92,61 @@ using Test
         end
     end
 
+    @testset "distribute_quota" begin
+
+        @testset "empty votes" begin
+            rest, quotas = distribute_quota(0, Party[])
+            @test rest == 0
+            @test isempty(quotas)
+
+            rest, quotas = distribute_quota(1, Party[])
+            @test rest == 1
+            @test isempty(quotas)
+        end
+
+        @testset "zero seats" begin
+            votes = [Party("A", 1), Party("B", 2), Party("C", 3)]
+            rest, quotas = distribute_quota(0, votes)
+            @test rest == 0
+            @test all(p.quota == 0 for p in quotas)
+        end
+
+        @testset "equal distribution" begin
+            votes = [Party("A", 10), Party("B", 10), Party("C", 10)]
+            rest, quotas = distribute_quota(300, votes)
+            @test rest == 0
+            @test quotas[1].quota == 100
+            @test quotas[1].remainder == 0
+            @test quotas[2].quota == 100
+            @test quotas[2].remainder == 0
+            @test quotas[3].quota == 100
+            @test quotas[3].remainder == 0
+        end
+
+        @testset "proportional distribution" begin
+            votes = [Party("A", 1), Party("B", 2), Party("C", 3)]
+            rest, quotas = distribute_quota(300, votes)
+            @test rest == 0
+            @test quotas[1].quota == 50
+            @test quotas[1].remainder == 0
+            @test quotas[2].quota == 100
+            @test quotas[2].remainder == 0
+            @test quotas[3].quota == 150
+            @test quotas[3].remainder == 0
+        end
+
+        @testset "with rest 301" begin
+            votes = [Party("A", 1), Party("B", 2), Party("C", 3)]
+            rest, quotas = distribute_quota(301, votes)
+            @test rest == 1
+            @test quotas[1].quota == 50
+            @test quotas[1].remainder == 1
+            @test quotas[2].quota == 100
+            @test quotas[2].remainder == 2
+            @test quotas[3].quota == 150
+            @test quotas[3].remainder == 3
+        end
+
+    end
+
 end

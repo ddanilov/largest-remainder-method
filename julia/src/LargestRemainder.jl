@@ -3,7 +3,7 @@
 
 module LargestRemainder
 
-export Party, read_data
+export Party, read_data, distribute_quota
 
 mutable struct Party
     name::String
@@ -30,6 +30,22 @@ function read_data(filename)
         end
     end
     return seats, votes
+end
+
+function distribute_quota(seats, votes)
+    total = sum(p.votes for p in votes; init=0)
+    names = getfield.(votes, :name)
+    vote_counts = getfield.(votes, :votes)
+
+    if total == 0
+        quotas = Party.(names, vote_counts, 0, 0)
+    else
+        x = vote_counts .* seats
+        quotas = Party.(names, vote_counts, x .÷ total, mod.(x, total))
+    end
+
+    rest = seats - sum(getfield.(quotas, :quota); init=0)
+    return rest, quotas
 end
 
 end
