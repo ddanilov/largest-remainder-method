@@ -6,7 +6,7 @@
 * `LocalCoverage.jl` package, <https://github.com/JuliaCI/LocalCoverage.jl>
 * `genhtml` from `lcov` for HTML coverage report, <https://github.com/linux-test-project/lcov>
 
-## Tests
+## Tests and code coverage
 
 Unit tests can be executed with command
 
@@ -24,3 +24,9 @@ To generate code coverage report, install `LocalCoverage.jl` with
 or
 
     julia --project --eval 'using LocalCoverage; html_coverage(open=true)'
+
+## CLI application
+
+To read input data from a file and print the distribution results run command
+
+    julia --project app/lrm_cli.jl <path-to-file>
