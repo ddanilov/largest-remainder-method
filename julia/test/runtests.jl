@@ -149,4 +149,32 @@ using Test
 
     end
 
+    @testset "distribute_rest" begin
+
+        @testset "one" begin
+            data = [Party("A", 0, 300, 1), Party("B", 0, 200, 2), Party("C", 0, 100, 3)]
+            result = distribute_rest(1, data)
+            @test result[1].quota == 300
+            @test result[2].quota == 200
+            @test result[3].quota == 101
+        end
+
+        @testset "two" begin
+            data = [Party("A", 0, 300, 1), Party("B", 0, 200, 2), Party("C", 0, 100, 3)]
+            result = distribute_rest(2, data)
+            @test result[1].quota == 300
+            @test result[2].quota == 201
+            @test result[3].quota == 101
+        end
+
+        @testset "three" begin
+            data = [Party("A", 0, 300, 1), Party("B", 0, 200, 2), Party("C", 0, 100, 3)]
+            result = distribute_rest(3, data)
+            @test result[1].quota == 301
+            @test result[2].quota == 201
+            @test result[3].quota == 101
+        end
+
+    end
+
 end

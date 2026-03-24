@@ -3,7 +3,7 @@
 
 module LargestRemainder
 
-export Party, read_data, distribute_quota
+export Party, read_data, distribute_quota, distribute_rest
 
 mutable struct Party
     name::String
@@ -46,6 +46,15 @@ function distribute_quota(seats, votes)
 
     rest = seats - sum(getfield.(quotas, :quota); init=0)
     return rest, quotas
+end
+
+function distribute_rest(rest, quotas)
+    result = deepcopy(quotas)
+    perm = sortperm(result, by=p -> p.remainder, rev=true)
+    for i in perm[1:rest]
+        result[i].quota += 1
+    end
+    return result
 end
 
 end
